@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom D3.js Visualization</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <div id="chart"></div>
+    <script>
+        // Sample data
+        const data = [
+            { label: 'Category A', value: 10 },
+            { label: 'Category B', value: 20 },
+            { label: 'Category C', value: 15 },
+            { label: 'Category D', value: 30 },
+        ];
+
+        // Set up SVG container
+        const svg = d3.select('#chart')
+            .append('svg')
+            .attr('width', 400)
+            .attr('height', 300);
+
+        // Create scales and axes
+        const xScale = d3.scaleBand()
+            .domain(data.map(d => d.label))
+            .range([0, 300])
+            .padding(0.1);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(data, d => d.value)])
+            .range([250, 0]);
+
+        svg.selectAll('.bar')
+            .data(data)
+            .enter()
+            .append('rect')
+            .attr('class', 'bar')
+            .attr('x', d => xScale(d.label))
+            .attr('y', d => yScale(d.value))
+            .attr('width', xScale.bandwidth())
+            .attr('height', d => 250 - yScale(d.value))
+            .attr('fill', 'steelblue');
+    </script>
+</body>
+</html>
